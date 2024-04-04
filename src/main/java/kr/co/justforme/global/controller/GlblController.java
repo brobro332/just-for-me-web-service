@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class GlobalController {
+public class GlblController {
     /**
      * 인덱스 페이지
      */
