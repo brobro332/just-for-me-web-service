@@ -30,7 +30,7 @@ dependencies {
 	// implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
 	/* Oracle */
-	// runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
+	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
 
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
