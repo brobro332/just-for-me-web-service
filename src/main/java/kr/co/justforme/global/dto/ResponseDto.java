@@ -13,7 +13,7 @@ public class ResponseDto<T> {
     private final T data;
 
     /**
-     * ofSuccess: 요청에 대하여 API 가 정상적으로 작동할 경우 응답
+     * 요청에 대하여 정상적으로 작동할 경우 응답
      * 1. Default
      * 2. Message : statusCode + message
      * 3. Data : statusCode + message + data
@@ -31,7 +31,7 @@ public class ResponseDto<T> {
     }
 
     /**
-     * ofFail: 요청에 대하여 API 가 정상적으로 작동하지 않을 경우 응답
+     * 요청에 대하여 정상적으로 작동하지 않을 경우 응답
      * 1. Default : statusCode
      * 2. Message : statusCode + message
      * 3. Data : statusCode + message + data
