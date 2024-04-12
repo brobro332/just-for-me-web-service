@@ -10,13 +10,45 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 <body>
-    <!-- 텍스트 -->
-    <p th:text="'안녕하세요, ' + ${name} + '님!'">안녕하세요.</p>
+    <!-- 컨테이너 -->
+    <div class="container-fluid" style="display: flex; width: 100vw; height: 100vh; margin: 0; padding: 0;">
+        <!-- 사이드바 -->
+        <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 20%; height: 100%; margin-right: auto;">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                <span class="fs-4"><b>JUST-FOR-ME</b></span>
+            </a>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" aria-current="page">
+                        지출관리
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-    <!-- 작업중 버튼 -->
-    <button class="btn btn-primary" type="button" disabled="">
-        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-        <span role="status">작업중...</span>
-    </button>
+        <!-- 본문 -->
+        <div class="content" style="flex: 1; display: flex; justify-content: center; align-items: center;">
+            <div class="intro" style="padding: 5%; width: 100%; height: 100%;">
+                <div class="h-100 p-5 text-bg-dark rounded-3">
+                    <h2 class="display-10 fw-bold">📑 JUST-FOR-ME</h2>
+                    <hr/>
+                    <p><b>📕 지출관리</b></p>
+                    <p class="col-md-10 fs-10">▪ 지출을 등록하고 기간/구분 별로 관리 및 조회할 수 있습니다. <br/>
+                        ▪ 엑셀 파일로 변환하여 다운로드 할 수 있습니다. <br/>
+                        ▪ 엑셀 서식을 작성하여 지출을 일괄적으로 등록할 수 있습니다. <br/>
+                        ▪ 지출을 시각화하여 PDF 뷰어를 통해 인쇄할 수 있습니다.
+                    </p>
+                    <br/>
+                    <p><b>📔 일지관리</b></p>
+                    <p class="col-md-10 fs-10">▪ 일지를 등록하고 기간/구분 별로 관리 및 조회할 수 있습니다. <br/>
+                        ▪ 계층형 구분을 등록하고 관리할 수 있습니다. <br/>
+                        ▪ 일지를 시각화하고 팝업 링크를 공유할 수 있습니다. <br/>
+                        ▪ 일간/주간/연간 별로 코멘트를 남길 수 있습니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
