@@ -10,7 +10,7 @@ public class GlobalController {
      * 인덱스 페이지
      */
     @GetMapping("/")
-    public String turnIndexPage(Model model) {
+    public String returnIndexPage(Model model) {
 
         model.addAttribute("name", "게스트");
 

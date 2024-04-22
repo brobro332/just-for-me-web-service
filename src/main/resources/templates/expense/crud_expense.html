@@ -39,7 +39,7 @@
             </a>
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
-                <li class="nav-item"><a href="expense" class="nav-link text-white" aria-current="page">지출</a></li>
+                <li class="nav-item"><a href="#" class="nav-link active" aria-current="page">지출</a></li>
             </ul>
         </div>
 
@@ -52,25 +52,32 @@
                         <ol class="breadcrumb" style="margin-bottom: 0;">
                             <li class="breadcrumb-item">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-door-fill" viewBox="0 0 16 16"><path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5"/></svg>
-                                <span class="fw-semibold">홈</span>
+                                <span class="visually-hidden">Home</span>
                             </li>
+                            <li class="breadcrumb-item" aria-current="page" style="margin-top: 2px;">지출</li>
+                            <li class="breadcrumb-item fw-semibold" aria-current="page" style="margin-top: 2px;">지출관리</li>
                         </ol>
                     </nav>
                     <hr/>
                     <br/>
 
                     <!-- 내용 -->
-                    <h2 class="display-10 fw-bold">📑 JUST-FOR-ME</h2>
-                    <p class="fs-7 fw-semibold">
-                        ├ 지출 <br/>
-                        │ ├── 지출관리 <br/>
-                        │ ├── 엑셀변환 <br/>
-                        │ └── PDF변환 <br/>
-                        ├ 쿠팡납품관리 <br/>
-                        └ 일지관리 <br/>
-                    </p>
+                    <p class="fs-7 fw-semibold">지출관리</p>
+
                 </div>
             </div>
+        </div>
+
+        <!-- 드롭다운 서브메뉴 -->
+        <div class="d-flex flex-column flex-md-row p-4 gap-4 py-md-5 align-items-center">
+            <ul class="dropdown-menu position-static d-grid gap-1 p-2 rounded-3 mx-0 border-0 shadow w-220px" data-bs-theme="dark">
+                <li><a class="dropdown-item rounded-2" th:href="@{/expense}">매뉴얼</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item rounded-2 active" th:href="@{/expense/crud}">지출관리</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item rounded-2" href="#">엑셀변환</a></li>
+                <li><a class="dropdown-item rounded-2" href="#">PDF변환</a></li>
+            </ul>
         </div>
     </div>
 </body>
