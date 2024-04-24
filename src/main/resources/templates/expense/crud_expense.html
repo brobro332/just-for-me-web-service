@@ -62,8 +62,19 @@
                     <br/>
 
                     <!-- 내용 -->
-                    <p class="fs-7 fw-semibold">지출관리</p>
-
+                    <!-- 테이블 -->
+                    <table id="tbl-expense-list" class="table table-striped table-hover table-sm">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">구분</th>
+                                <th scope="col">명세</th>
+                                <th scope="col">비용</th>
+                                <th scope="col">지출일시</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -80,5 +91,30 @@
             </ul>
         </div>
     </div>
+<script th:inline="javascript">
+function fetchReadExpenseList() {
+    fetch('/expense/api/v1')
+    .then(res => res.json())
+        .then(list => {
+            let tblBody = document.querySelector('#tbl-expense-list tbody');
+
+            list.data.forEach(item => {
+                let rows = document.createElement('tr');
+
+                rows.innerHTML =
+                    `<td>${item.expenseId}</td>`
+                    + `<td>${item.expenseDiv}</td>`
+                    + `<td>${item.expenseDesc}</td>`
+                    + `<td>${item.charge}</td>`
+                    + `<td>${item.expensedAt}</td>`;
+
+                tblBody.appendChild(rows);
+        });
+    })
+    .catch(error => console.error('데이터를 가져오는 중 오류 발생:', error));
+}
+
+window.onload = fetchReadExpenseList;
+</script>
 </body>
 </html>

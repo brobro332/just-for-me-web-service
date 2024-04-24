@@ -27,6 +27,14 @@ public class ExpenseApiController {
         return ResponseDto.ofSuccessMessage("지출 등록에 성공했습니다.");
     }
 
+    @GetMapping("/expense/api/v1")
+    public ResponseDto<?> readExpense() {
+
+        log.debug("ExpenseApiController.readExpense");
+
+        return ResponseDto.ofSuccessData("지출 조회에 성공했습니다.", service.readExpense());
+    }
+
     /**
      * 지출 수정
      */
@@ -40,6 +48,9 @@ public class ExpenseApiController {
         return ResponseDto.ofSuccessMessage("지출 수정에 성공했습니다.");
     }
 
+    /**
+     * 지출 삭제
+     */
     @DeleteMapping("/expense/api/v1/{expense_id}")
     public ResponseDto<?> deleteExpense(@PathVariable(name = "expense_id") Long id) {
 
