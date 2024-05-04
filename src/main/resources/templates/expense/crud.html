@@ -22,7 +22,7 @@
     height: 100%;
     margin-right: auto;
 }
-.content {
+.content-wrap {
     flex: 1;
     display: flex;
     justify-content: center;
@@ -44,7 +44,7 @@
         </div>
 
         <!-- 본문 -->
-        <div class="content">
+        <div class="content-wrap">
             <div class="intro" style="padding: 5%; width: 100%; height: 100%;">
                 <div class="h-100 p-5 text-bg-white rounded-3" style="overflow: auto;">
                     <!-- 네비게이션 바 -->
@@ -59,22 +59,25 @@
                         </ol>
                     </nav>
                     <hr/>
-                    <br/>
-
                     <!-- 내용 -->
                     <!-- 테이블 -->
-                    <table id="tbl-expense-list" class="table table-striped table-hover table-sm">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">구분</th>
-                                <th scope="col">명세</th>
-                                <th scope="col">비용</th>
-                                <th scope="col">지출일시</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table-group-divider"></tbody>
-                    </table>
+                    <div class="content" style="height: 70%;">
+                        <table id="tbl-expense-list" class="table table-striped table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">구분</th>
+                                    <th scope="col">명세</th>
+                                    <th scope="col">비용</th>
+                                    <th scope="col">지출일시</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider"></tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/expense/crud/create}'|">등록</button>
+                    <button type="button" class="btn btn-primary" th:onclick="fetchUpdateExpense()">수정</button>
+                    <button type="button" class="btn btn-primary" th:onclick="fetchDeleteExpense()">삭제</button>
                 </div>
             </div>
         </div>
@@ -94,24 +97,75 @@
 <script th:inline="javascript">
 function fetchReadExpenseList() {
     fetch('/expense/api/v1')
-    .then(res => res.json())
-        .then(list => {
-            let tblBody = document.querySelector('#tbl-expense-list tbody');
+        .then(res => res.json())
+            .then(list => {
+                let tblBody = document.querySelector('#tbl-expense-list tbody');
 
-            list.data.forEach(item => {
-                let rows = document.createElement('tr');
+                list.data.forEach(item => {
+                    let rows = document.createElement('tr');
 
-                rows.innerHTML =
-                    `<td>${item.expenseId}</td>`
-                    + `<td>${item.expenseDiv}</td>`
-                    + `<td>${item.expenseDesc}</td>`
-                    + `<td>${item.charge}</td>`
-                    + `<td>${item.expensedAt}</td>`;
+                    rows.innerHTML =
+                        `<td><input class="form-check-input" type="checkbox" id=${item.expenseId}></td>`
+                        + `<td>${item.expenseDiv.name}</td>`
+                        + `<td>${item.expenseDesc}</td>`
+                        + `<td>${item.charge}</td>`
+                        + `<td>${item.expensedAt}</td>`;
 
-                tblBody.appendChild(rows);
-        });
-    })
-    .catch(error => console.error('데이터를 가져오는 중 오류 발생:', error));
+                    tblBody.appendChild(rows);
+            });
+        })
+        .catch(error => console.error('데이터를 가져오는 중 오류 발생:', error));
+}
+
+function fetchUpdateExpense() {
+    let checkedBoxList = document.querySelectorAll('input[type="checkbox"]:checked');
+
+    if (checkedBoxList.length > 1) {
+        return false;
+    }
+
+    let expenseId = checkedBoxList[0].id;
+
+    fetch('/expense/crud/update/' + expenseId)
+        .then(res => {
+            return res.text();
+        })
+            .then(html => {
+                document.open();
+                document.write(html);
+                document.close();
+            })
+                .catch(error => console.error('페이지 이동 중 오류 발생:', error));
+}
+
+function fetchDeleteExpense() {
+    let expenseList = document.querySelectorAll('#tbl-expense-list tbody tr');
+    let expenseIdArray = [];
+    let checkbox;
+
+    expenseList.forEach(function(el) {
+        checkbox = el.querySelector('.form-check-input');
+
+        if (checkbox.checked) {
+            let data = new Object();
+            data.expenseId = checkbox.id;
+            expenseIdArray.push(checkbox.id);
+        }
+    });
+
+    fetch('/expense/api/v1', {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            expenseIdList: expenseIdArray
+        })
+    }).then(res => res.json())
+        .then(data => {
+            console.log(data);
+        })
+    .catch(error => console.error('데이터를 삭제하는 중 오류 발생:', error));
 }
 
 window.onload = fetchReadExpenseList;

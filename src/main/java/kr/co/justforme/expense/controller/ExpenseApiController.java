@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -51,12 +53,12 @@ public class ExpenseApiController {
     /**
      * 지출 삭제
      */
-    @DeleteMapping("/expense/api/v1/{expense_id}")
-    public ResponseDto<?> deleteExpense(@PathVariable(name = "expense_id") Long id) {
+    @DeleteMapping("/expense/api/v1")
+    public ResponseDto<?> deleteExpense(@RequestBody ExpenseReqDto.Delete idList) {
 
         log.debug("ExpenseApiController.deleteExpense");
 
-        service.deleteExpense(id);
+        service.deleteExpense(idList);
 
         return ResponseDto.ofSuccessMessage("지출 삭제에 성공했습니다.");
     }

@@ -1,7 +1,8 @@
 package kr.co.justforme.expense.service;
 
-import kr.co.justforme.expense.Expense;
+import kr.co.justforme.expense.entity.Expense;
 import kr.co.justforme.expense.dto.ExpenseReqDto;
+import kr.co.justforme.expense.entity.ExpenseDiv;
 import kr.co.justforme.expense.repository.ExpenseRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +31,9 @@ public class ExpenseService {
         log.debug("지출비용 : " + dto.getCharge());
         log.debug("지출명세 : " + dto.getExpenseDesc());
 
+        // 객체 생성
         Expense expense = Expense.builder()
-                .expenseDiv(dto.getExpenseDiv())
+                .expenseDiv(ExpenseDiv.toEnum(dto.getExpenseDiv()))
                 .charge(dto.getCharge())
                 .expensedAt(dto.getExpensedAt())
                 .createdAt(LocalDateTime.now())
@@ -39,6 +41,7 @@ public class ExpenseService {
                 .expenseDesc(dto.getExpenseDesc())
                 .build();
 
+        // 등록
         repository.save(expense);
     }
 
@@ -69,7 +72,7 @@ public class ExpenseService {
 
         if (expense != null) {
             expense.updateExpense(
-                    dto.getExpenseDiv(),
+                    ExpenseDiv.toEnum(dto.getExpenseDiv()),
                     dto.getCharge(),
                     dto.getExpensedAt(),
                     LocalDateTime.now(),    // 수정일시
@@ -80,19 +83,21 @@ public class ExpenseService {
     /**
      * 지출 삭제
      */
-    public void deleteExpense(Long id) {
+    public void deleteExpense(ExpenseReqDto.Delete idList) {
 
         log.debug("ExpenseService.deleteExpense");
 
-        Expense expense = repository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("해당 지출 정보가 존재하지 않습니다."));
+        for (Long id : idList.getExpenseIdList()) {
+            Expense expense = repository.findById(id)
+                    .orElseThrow(() -> new NoSuchElementException("해당 지출 정보가 존재하지 않습니다."));
 
-        log.debug("지출아이디 : " + expense.getExpenseId());
-        log.debug("지출구분 : " + expense.getExpenseDiv());
-        log.debug("지출명세 : " + expense.getExpenseDesc());
-        log.debug("지출일시 : " + expense.getExpensedAt());
-        // log.debug("지출작성자 : " + expense.getMemberId());
+            log.debug("지출아이디 : " + expense.getExpenseId());
+            log.debug("지출구분 : " + expense.getExpenseDiv());
+            log.debug("지출명세 : " + expense.getExpenseDesc());
+            log.debug("지출일시 : " + expense.getExpensedAt());
+            // log.debug("지출작성자 : " + expense.getMemberId());
 
-        repository.delete(expense);
+            repository.delete(expense);
+        }
     }
 }
