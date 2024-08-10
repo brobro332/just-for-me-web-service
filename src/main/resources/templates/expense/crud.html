@@ -93,6 +93,42 @@
                 <li><a class="dropdown-item rounded-2" href="#">PDF변환</a></li>
             </ul>
         </div>
+
+        <!-- 모달창 -->
+        <div class="modal fade" id="modal-confirm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">알림</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        1개의 지출 정보만 수정할 수 있습니다.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-confirm" data-bs-dismiss="modal">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 모달창 -->
+        <div class="modal fade" id="modal-delete-confirm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel-delete">삭제</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        지출 정보가 성공적으로 삭제되었습니다.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-confirm" data-bs-dismiss="modal" th:onclick="|location.href='@{/expense/crud}'|">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 <script th:inline="javascript">
 function fetchReadExpenseList() {
@@ -101,7 +137,7 @@ function fetchReadExpenseList() {
             .then(list => {
                 let tblBody = document.querySelector('#tbl-expense-list tbody');
 
-                list.data.forEach(item => {
+                list.data.content.forEach(item => {
                     let rows = document.createElement('tr');
 
                     rows.innerHTML =
@@ -121,6 +157,10 @@ function fetchUpdateExpense() {
     let checkedBoxList = document.querySelectorAll('input[type="checkbox"]:checked');
 
     if (checkedBoxList.length > 1) {
+        let modal = new bootstrap.Modal(document.getElementById('modal-confirm'), {
+                keyboard: false
+            })
+        modal.show();
         return false;
     }
 
@@ -163,7 +203,10 @@ function fetchDeleteExpense() {
         })
     }).then(res => res.json())
         .then(data => {
-            console.log(data);
+            let modal = new bootstrap.Modal(document.getElementById('modal-delete-confirm'), {
+                keyboard: false
+            })
+            modal.show();
         })
     .catch(error => console.error('데이터를 삭제하는 중 오류 발생:', error));
 }

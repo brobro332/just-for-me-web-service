@@ -30,7 +30,10 @@ dependencies {
 	// implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
 	/* Oracle */
-	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
+	implementation group: 'com.oracle.database.jdbc', name: 'ojdbc6', version: '11.2.0.4'
+	// https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-core
+	implementation group: 'org.hibernate.orm', name: 'hibernate-core', version: '6.2.7.Final'
+
 
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 

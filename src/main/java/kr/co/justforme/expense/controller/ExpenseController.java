@@ -36,6 +36,9 @@ public class ExpenseController {
         return "expense/create";
     }
 
+    /**
+     * 지출도메인 수정 페이지
+     */
     @GetMapping("/expense/crud/update/{expense_id}")
     public String returnUpdatePage(@PathVariable(name = "expense_id") Long id, Model model) {
 

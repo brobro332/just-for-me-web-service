@@ -97,6 +97,42 @@
                 </div>
             </div>
         </div>
+
+        <!-- 성공 모달창 -->
+        <div class="modal fade" id="modal-success-alert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel-success" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel-success">수정</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        지출 정보가 성공적으로 수정되었습니다.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-confirm" data-bs-dismiss="modal" th:onclick="|location.href='@{/expense/crud}'|">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 실패 모달창 -->
+        <div class="modal fade" id="modal-fail-alert" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel-fail" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel-fail">수정</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        지출 정보 수정에 실패하였습니다.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-confirm" data-bs-dismiss="modal">확인</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 <script th:inline="javascript">
 function fetchUpdateExpense() {
@@ -106,6 +142,7 @@ function fetchUpdateExpense() {
     let selectedOption = expenseDiv.options[expenseDiv.selectedIndex];
     let value = selectedOption.value;
 
+    let modal;
     fetch('/expense/api/v1/' + expenseId, {
         method: "PUT",
         headers: {
@@ -117,11 +154,36 @@ function fetchUpdateExpense() {
             charge: document.querySelector('.form-charge').value,
             expensedAt: document.querySelector('.form-expensed-at').value
         })
-    }).then(res => res.json())
-        .then(data => {
-            console.log(data);
-        })
-    .catch(error => console.error('데이터를 등록하는 중 오류 발생:', error));
+    })
+    .then(res => {
+        if (res.ok) {
+            return res.json().then(data => {
+                // 성공 모달 표시
+                modal = new bootstrap.Modal(document.getElementById('modal-success-alert'), {
+                    keyboard: false
+                });
+                modal.show();
+
+                return data;
+            });
+        } else {
+            return res.json().then(errorInfo => {
+                // 실패 모달 표시
+                modal = new bootstrap.Modal(document.getElementById('modal-fail-alert'), {
+                    keyboard: false
+                });
+                modal.show();
+
+                throw new Error('400 or 500 에러 발생: ' + errorInfo.message);
+            });
+        }
+    })
+    .then(data => {
+        console.log('Success data:', data);
+    })
+    .catch(error => {
+        console.error(error.message);
+    });
 }
 
 window.onload = function() {
@@ -135,6 +197,8 @@ window.onload = function() {
         }
     }
 }
+
+
 </script>
 </body>
 </html>
